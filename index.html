@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Horizon Hotel Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+        /* Vibrant Red Navigation Bar */
+        .navbar {
+            background: linear-gradient(145deg, #ff4444, #ff0000) !important;
+            box-shadow: 0 2px 10px rgba(255, 68, 68, 0.3);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff200 !important;
+            transform: translateY(-2px);
+        }
+
+        /* Happy Color Scheme */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(255, 230, 0, 0.8), rgba(255, 100, 100, 0.8)),
+                        url('https://source.unsplash.com/random/1920x1080/?hotel,lobby');
+            height: 80vh;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff9a00, #ff5252);
+            border: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #ff5252, #ff9a00);
+        }
+
+        .room-card {
+            background: linear-gradient(145deg, #ffffff, #fff9f4);
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 100, 100, 0.2);
+        }
+
+        .room-card img {
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .availability-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(255, 68, 68, 0.2);
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #ff4444, #ff8000) !important;
+            color: white !important;
+        }
+
+        .footer {
+            background: linear-gradient(145deg, #ff4444, #ff8000);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .status-available {
+            color: #00c853;
+            font-weight: bold;
+        }
+
+        .status-booked {
+            color: #ff1744;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">🏩 Grand Horizon</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#rooms">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#admin">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Experience Luxury Redefined</h1>
+            <div class="availability-form">
+                <h3>Check Availability</h3>
+                <form id="availabilityForm" class="row g-3">
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" id="checkInDate" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" id="checkOutDate" required>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="roomType" required>
+                            <option value="">Room Type</option>
+                            <option value="deluxe">Deluxe</option>
+                            <option value="suite">Suite</option>
+                            <option value="executive">Executive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Check</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rooms Section -->
+    <section id="rooms" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Rooms</h2>
+            <div class="row" id="roomList">
+                <!-- Room cards will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Make a Reservation</h2>
+            <form id="bookingForm">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" required>
+                            <option value="">Room Type</option>
+                            <option>Deluxe</option>
+                            <option>Suite</option>
+                            <option>Executive</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard -->
+    <section id="admin" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Admin Dashboard</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">Add New Room</div>
+                        <div class="card-body">
+                            <form id="addRoomForm">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Room Number" required>
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" required>
+                                        <option value="">Room Type</option>
+                                        <option>Deluxe</option>
+                                        <option>Suite</option>
+                                        <option>Executive</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">Add Room</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Current Bookings</div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Room</th>
+                                        <th>Guest</th>
+                                        <th>Dates</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookingList">
+                                    <!-- Bookings will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>🎉 Experience Joyful Stays at Grand Horizon! 🎉</p>
+            <div class="social-icons mt-3">
+                <a href="#" class="text-white mx-2">📱</a>
+                <a href="#" class="text-white mx-2">📷</a>
+                <a href="#" class="text-white mx-2">📧</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample Room Data with Images
+        const rooms = [
+            { 
+                number: '101',
+                type: 'deluxe',
+                price: 2000,
+                available: true,
+                image: 'h1.jpg'
+            },
+            { 
+                number: '201',
+                type: 'suite',
+                price: 3500,
+                available: false,
+                image: 'h2.webp'
+            },
+            { 
+                number: '301',
+                type: 'executive',
+                price: 5000,
+                available: true,
+                image: 'h3.jpeg'
+            }
+        ];
+
+        const bookings = [];
+
+        // Load Rooms
+        function loadRooms() {
+            const roomList = document.getElementById('roomList');
+            roomList.innerHTML = rooms.map(room => `
+                <div class="col-md-4 mb-4">
+                    <div class="card room-card">
+                        <img src="${room.image}" class="card-img-top" alt="${room.type} room">
+                        <div class="card-body">
+                            <h5 class="card-title">${room.type.toUpperCase()} ROOM</h5>
+                            <p class="card-text">
+                                <strong>Room ${room.number}</strong><br>
+                                <span class="text-primary">INR ${room.price}/night</span><br>
+                                Status: <span class="${room.available ? 'status-available' : 'status-booked'}">
+                                    ${room.available ? 'AVAILABLE' : 'BOOKED'}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle Booking Form
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            bookings.push({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                checkIn: formData.get('checkIn'),
+                checkOut: formData.get('checkOut'),
+                roomType: formData.get('roomType')
+            });
+            alert('Booking successful!');
+            this.reset();
+            updateBookingsList();
+        });
+
+        // Update Bookings List
+        function updateBookingsList() {
+            const bookingList = document.getElementById('bookingList');
+            bookingList.innerHTML = bookings.map(booking => `
+                <tr>
+                    <td>${booking.roomType}</td>
+                    <td>${booking.name}</td>
+                    <td>${booking.checkIn} to ${booking.checkOut}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize
+        loadRooms();
+        updateBookingsList();
+    </script>
+    <script src="feat.js"></script>
+
+</body>
+</html>
